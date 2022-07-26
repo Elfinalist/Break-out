@@ -1,9 +1,15 @@
 const grid = document.querySelector('.grid')
 const blockWidth = 100
 const blockHeight = 20
+const boardWidth = 560
 
 const userStart = [230, 10] // where the user will always start from
 let currentPosition = userStart
+
+
+const ballStart = [270, 40]
+let ballCurrentPosition = ballStart
+
 
 //create Block
 class Block {
@@ -53,7 +59,60 @@ addBlocks()
 //add user
 const user = document.createElement('div')
 user.classList.add('user')
-user.style.left = currentPosition[0] + 'px'
-user.style.bottom = currentPosition[1] + 'px'
+drawUser()
 grid.appendChild(user)
 
+
+//draw the user
+function drawUser() {
+    user.style.left = currentPosition[0] + 'px'
+    user.style.bottom = currentPosition[1] + 'px'
+}
+
+
+//draw the ball
+function drawBall() {
+    ball.style.left = ballCurrentPosition[0] + 'px'
+    ball.style.bottom = ballCurrentPosition[1] + 'px'
+}
+
+
+
+//move user
+function moveUser(e) {
+    switch(e.key){
+        case 'ArrowLeft':
+            if (currentPosition[0] > 0) { 
+            currentPosition[0] -= 10
+            drawUser()
+            }
+            break;
+        case 'ArrowRight':
+            if (currentPosition[0] < boardWidth - blockWidth) {
+            currentPosition[0] += 10
+            drawUser()
+            }
+            break;
+
+    } // event to listen out for tap of key either left or right
+}
+
+document.addEventListener('keydown', moveUser)
+
+
+//add ball
+
+const ball = document.createElement('div')
+ball.classList.add('ball')
+drawBall()
+grid.appendChild(ball)
+
+
+// move the ball
+function moveBall() {
+    ballCurrentPosition[0] += 2
+    ballCurrentPosition[1] += 2
+    drawBall()
+}
+
+setInterval(moveBall, 30)

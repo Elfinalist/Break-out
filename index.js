@@ -1,10 +1,12 @@
 const grid = document.querySelector('.grid')
+const scoreDisplay = document.querySelector('#score')
 const blockWidth = 100
 const blockHeight = 20
 const boardWidth = 560
 const ballDiameter = 20
+const boardHeight = 300
 let timerId
-let xDirection = 2
+let xDirection = -2
 let yDirection = 2
 
 const userStart = [230, 10] // where the user will always start from
@@ -125,16 +127,38 @@ timerId = setInterval(moveBall, 30)
 //check for collisions
 function checkForCollisions() {
     //check for wall collisions
-    if (ballCurrentPosition[0] >= (boardWidth -  ballDiameter)) {
+    if (ballCurrentPosition[0] >= (boardWidth -  ballDiameter) ||
+        ballCurrentPosition[1] >= (boardHeight - ballDiameter) ||
+        ballCurrentPosition[0] <= 0
+        ) {
         changeDirection()
 
     } // if its larger then its off the grid and we need to change the direction
+
+    //check for gamme over
+    if (ballCurrentPosition[1] <= 0) {
+        clearInterval(timerId)
+        scoreDisplay.innerHTML = 'You Lose!'
+        document.removeEventListener('keydown', moveUser)
+    }
 }
 
 function changeDirection() {
-    if (xDirection === 2 && yDirection ===2) {
-        xDirection =-2
+    if (xDirection === 2 && yDirection === 2) {
+        yDirection = -2
         return
     }
-    // if ()
+     if (xDirection === 2 && yDirection === -2){
+         xDirection = -2
+         return
+     }
+     if (xDirection === -2 && yDirection === -2) {
+         yDirection = 2
+         return
+     }
+     if (xDirection === -2 && yDirection === 2) {
+         xDirection = 2
+         return
+     }
+
 }

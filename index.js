@@ -8,6 +8,7 @@ const boardHeight = 300
 let timerId
 let xDirection = -2
 let yDirection = 2
+let score = 0
 
 const userStart = [230, 10] // where the user will always start from
 let currentPosition = userStart
@@ -134,6 +135,20 @@ function checkForCollisions() {
         ) {
             const allBlocks =Array.from(document.querySelectorAll('.block'))
             allBlocks[i].classList.remove('block') //any block that gets hit gets removed
+            blocks.splice(i, 1) //removes block by index
+            changeDirection()
+            score++
+            scoreDisplay.innerHTML = score
+
+            //check for win
+            if (blocks.length === 0) {
+                scoreDisplay.innerHTML = 'You Win!'
+                clearInterval(timerId)
+                document.removeEventListener('keydown', moveUser)
+            }
+
+
+
         }
             
     }
@@ -149,6 +164,18 @@ function checkForCollisions() {
         changeDirection()
 
     } // if its larger then its off the grid and we need to change the direction
+
+    //check for user collisions
+    if (
+        (ballCurrentPosition[0] > currentPosition[0] && ballCurrentPosition[0] < currentPosition[0] + blockWidth) && 
+       (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight)
+    ) {
+        changeDirection() 
+    }
+
+
+
+
 
     //check for gamme over
     if (ballCurrentPosition[1] <= 0) {
